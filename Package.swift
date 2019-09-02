@@ -13,11 +13,11 @@ let package = Package(
             path: "Sources",
             exclude: ["DiskExample"]
         ),
-        .testTarget(
-            name: "DiskTests",
-            dependencies: ["Disk"],
-            path: "Tests",
-            exclude:  ["DiskExample"]
-        )
+//        .testTarget(
+//            name: "DiskTests",
+//            dependencies: ["Disk"],
+//            path: "Tests",
+//            exclude:  ["DiskExample"]
+//        )
     ]
 )

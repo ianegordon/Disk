@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "DiskErrors.h"
 
 //! Project version number for Disk.
 FOUNDATION_EXPORT double DiskVersionNumber;

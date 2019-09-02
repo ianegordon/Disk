@@ -22,25 +22,23 @@
 
 import Foundation
 
-extension Disk {
-    public enum ErrorCode: Int {
-        case noFileFound = 0
-        case serialization = 1
-        case deserialization = 2
-        case invalidFileName = 3
-        case couldNotAccessTemporaryDirectory = 4
-        case couldNotAccessUserDomainMask = 5
-        case couldNotAccessSharedContainer = 6
-    }
+public enum DiskError: Error {
+  case noFileFound
+  case serialization(localizedDescription: String?, failureReason: String?, recoverySuggestion: String?)
+  case deserialization(localizedDescription: String?, failureReason: String?, recoverySuggestion: String?)
+  case invalidFileName(localizedDescription: String?, failureReason: String?, recoverySuggestion: String?)
+  case couldNotAccessTemporaryDirectory(localizedDescription: String?, failureReason: String?, recoverySuggestion: String?)
+  case couldNotAccessUserDomainMask
+  case couldNotAccessSharedContainer(localizedDescription: String?, failureReason: String?, recoverySuggestion: String?)
+  case genericDiskError(localizedDescription: String, failureReason: String, recoverySuggestion: String)
 
-    public static let errorDomain = "DiskErrorDomain"
-  
-    /// Create custom error that FileManager can't account for
-    static func createError(_ errorCode: DiskError.Code, description: String?, failureReason: String?, recoverySuggestion: String?) -> DiskError {
-        let errorInfo: [String: Any] = [NSLocalizedDescriptionKey : description ?? "",
-                                        NSLocalizedRecoverySuggestionErrorKey: recoverySuggestion ?? "",
-                                        NSLocalizedFailureReasonErrorKey: failureReason ?? ""]
-        return NSError(domain: DiskErrorDomain, code: errorCode.rawValue, userInfo: errorInfo) as! DiskError
-    }
+  /// Create custom error that FileManager can't account for
+  static func createError(description: String?, failureReason: String?, recoverySuggestion: String?) -> Error {
+    let localizedDescription = description ?? ""
+    let localizedRecoverySuggestion = recoverySuggestion ?? ""
+    let localizedFailureReason = failureReason ?? ""
+
+    return DiskError.genericDiskError(localizedDescription: localizedDescription, failureReason: localizedFailureReason, recoverySuggestion: localizedRecoverySuggestion)
+  }
 }
 

@@ -64,9 +64,7 @@ public extension Disk {
                     imageData = data
                     imageName = imageName + ".jpg"
                 } else {
-                    throw createError(
-                        .serialization,
-                        description: "Could not serialize UIImage \(i) in the array to Data.",
+                    throw DiskError.serialization(localizedDescription: "Could not serialize UIImage \(i) in the array to Data.",
                         failureReason: "UIImage \(i) could not serialize to PNG or JPEG data.",
                         recoverySuggestion: "Make sure there are no corrupt images in the array."
                     )
@@ -124,9 +122,7 @@ public extension Disk {
                     imageData = data
                     imageName = imageName + ".jpg"
                 } else {
-                    throw createError(
-                        .serialization,
-                        description: "Could not serialize UIImage to Data.",
+                    throw DiskError.serialization(localizedDescription: "Could not serialize UIImage to Data.",
                         failureReason: "UIImage could not serialize to PNG or JPEG data.",
                         recoverySuggestion: "Make sure image is not corrupt."
                     )

@@ -53,9 +53,8 @@ extension Disk {
                 }
                 return url
             } else {
-                throw createError(
-                    .couldNotAccessSharedContainer,
-                    description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
+              throw DiskError.couldNotAccessSharedContainer(
+                localizedDescription: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
                     failureReason: "Could not get access to shared container with app group named \(appGroupName).",
                     recoverySuggestion: "Check that the app-group name in the entitlement matches the string provided."
                 )
@@ -74,8 +73,7 @@ extension Disk {
                 }
                 return url
             } else {
-                throw createError(
-                    .couldNotAccessTemporaryDirectory,
+                throw DiskError.createError(
                     description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
                     failureReason: "Could not get access to the application's temporary directory.",
                     recoverySuggestion: "Use a different directory."
@@ -92,8 +90,7 @@ extension Disk {
             }
             return url
         } else {
-            throw createError(
-                .couldNotAccessUserDomainMask,
+            throw DiskError.createError(
                 description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
                 failureReason: "Could not get access to the file system's user domain mask.",
                 recoverySuggestion: "Use a different directory."
@@ -105,8 +102,7 @@ extension Disk {
     static func getExistingFileURL(for path: String?, in directory: Directory) throws -> URL {
             let url = try createURL(for: path, in: directory)
             guard FileManager.default.fileExists(atPath: url.path) else {
-                throw createError(
-                    .noFileFound,
+                throw DiskError.createError(
                     description: "Could not find an existing file or folder at \(url.path).",
                     failureReason: "There is no existing file or folder at \(url.path)",
                     recoverySuggestion: "Check if a file or folder exists before trying to commit an operation on it."
@@ -126,8 +122,7 @@ extension Disk {
             .joined(separator: "")
         let validFileName = removeSlashesAtBeginning(of: pathWithoutIllegalCharacters)
         guard validFileName.count > 0  && validFileName != "." else {
-            throw createError(
-                .invalidFileName,
+            throw DiskError.createError(
                 description: "\(originalString) is an invalid file name.",
                 failureReason: "Cannot write/read a file with the name \(originalString) on disk.",
                 recoverySuggestion: "Use another file name with alphanumeric characters."

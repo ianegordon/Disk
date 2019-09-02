@@ -46,9 +46,7 @@ public extension Disk {
                 if let data = pngData {
                     imageData = data
                 } else {
-                    throw createError(
-                        .serialization,
-                        description: "Could not serialize UIImage to PNG.",
+                  throw DiskError.serialization(localizedDescription: "Could not serialize UIImage to PNG.",
                         failureReason: "Data conversion failed.",
                         recoverySuggestion: "Try saving this image as a .jpg or without an extension at all."
                     )
@@ -63,9 +61,7 @@ public extension Disk {
                 if let data = jpegData {
                     imageData = data
                 } else {
-                    throw createError(
-                        .serialization,
-                        description: "Could not serialize UIImage to JPEG.",
+                    throw DiskError.serialization(localizedDescription: "Could not serialize UIImage to JPEG.",
                         failureReason: "Data conversion failed.",
                         recoverySuggestion: "Try saving this image as a .png or without an extension at all."
                     )
@@ -88,9 +84,7 @@ public extension Disk {
                 if let data = data {
                     imageData = data
                 } else {
-                    throw createError(
-                        .serialization,
-                        description: "Could not serialize UIImage to Data.",
+                    throw DiskError.serialization(localizedDescription: "Could not serialize UIImage to Data.",
                         failureReason: "UIImage could not serialize to PNG or JPEG data.",
                         recoverySuggestion: "Make sure image is not corrupt or try saving without an extension at all."
                     )
@@ -119,9 +113,7 @@ public extension Disk {
             if let image = UIImage(data: data) {
                 return image
             } else {
-                throw createError(
-                    .deserialization,
-                    description: "Could not decode UIImage from \(url.path).",
+                throw DiskError.deserialization(localizedDescription: "Could not decode UIImage from \(url.path).",
                     failureReason: "A UIImage could not be created out of the data in \(url.path).",
                     recoverySuggestion: "Try deserializing \(url.path) manually after retrieving it as Data."
                 )

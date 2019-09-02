@@ -804,10 +804,11 @@ class DiskTests: XCTestCase {
             try Disk.save(multipleMessages, to: .documents, as: "Folder/")
             try Disk.append(oneMessage, to: "Folder/", in: .documents)
             let _ = try Disk.retrieve("Folder/", from: .documents, as: [Message].self)
-        } catch let error as NSError {
-            XCTAssert(error is DiskError)
-            XCTAssert(error.code == DiskError.invalidFileName.rawValue)
-        }
+        } catch DiskError.invalidFileName {
+          XCTAssert(true, "Expected Behavior")
+        } catch {
+          XCTAssert(false, "This was expected to throw a DiskError.invalidFileName: \(error)")
+      }
     }
     
     // Test iOS 11 Volume storage resource values
@@ -818,7 +819,7 @@ class DiskTests: XCTestCase {
         XCTAssert(Disk.availableCapacityForImportantUsage != nil && Disk.availableCapacityForImportantUsage != 0)
         XCTAssert(Disk.availableCapacityForOpportunisticUsage != nil && Disk.availableCapacityForOpportunisticUsage != 0)
         
-        print("\n\n============== Disk iOS 11 Volume Information ==============")
+        print("\n\n============== Disk iOS 11+ Volume Information ==============")
         print("Disk.totalCapacity = \(Disk.totalCapacity!)")
         print("Disk.availableCapacity = \(Disk.availableCapacity!)")
         print("Disk.availableCapacityForImportantUsage = \(Disk.availableCapacityForImportantUsage!)")
